@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Forms</title>
+</head>
+<body>
+
+    <!-- form for uploading a config file -->
+    <form action="http://localhost:8080/upload"
+          method="post"
+          enctype="multipart/form-data"
+          target="graphFrame">
+
+        <input type="file" name="configFile">
+        <input type="submit" value="Deploy">
+
+    </form>
+
+    <br>
+
+    <!-- form for publishing a message to a topic -->
+    <form action="http://localhost:8080/publish"
+          method="get"
+          target="tableFrame">
+
+        <label>Topic name:</label>
+        <br>
+        <input type="text" name="topic">
+
+        <br>
+
+        <label>Message:</label>
+        <br>
+        <input type="text" name="message">
+
+        <br>
+
+        <input type="submit" value="Send">
+
+    </form>
+
+</body>
+</html>

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Graph</title>
+</head>
+<body>
+<h2>Computational Graph</h2>
+<svg width="900" height="600" style="border:1px solid black;">
+<defs>
+<marker id="arrow" markerWidth="10" markerHeight="10" refX="10" refY="3" orient="auto" markerUnits="strokeWidth">
+<path d="M0,0 L0,6 L9,3 z" fill="black" />
+</marker>
+</defs>
+<line x1="560" y1="490" x2="340" y2="110" stroke="black" stroke-width="2" marker-end="url(#arrow)" />
+<line x1="341" y1="490" x2="560" y2="490" stroke="black" stroke-width="2" marker-end="url(#arrow)" />
+<line x1="230" y1="300" x2="560" y2="490" stroke="black" stroke-width="2" marker-end="url(#arrow)" />
+<line x1="340" y1="110" x2="560" y2="110" stroke="black" stroke-width="2" marker-end="url(#arrow)" />
+<line x1="560" y1="110" x2="670" y2="300" stroke="black" stroke-width="2" marker-end="url(#arrow)" />
+<rect x="625" y="275" width="90" height="50" fill="lightblue" stroke="black" />
+<text x="670" y="305" text-anchor="middle" font-size="14">TD</text>
+<circle cx="560" cy="490" r="35" fill="lightgreen" stroke="black" />
+<text x="560" y="495" text-anchor="middle" font-size="13">APlusAgent</text>
+<rect x="296" y="465" width="90" height="50" fill="lightblue" stroke="black" />
+<text x="341" y="495" text-anchor="middle" font-size="14">TA</text>
+<rect x="185" y="275" width="90" height="50" fill="lightblue" stroke="black" />
+<text x="230" y="305" text-anchor="middle" font-size="14">TB</text>
+<rect x="295" y="85" width="90" height="50" fill="lightblue" stroke="black" />
+<text x="340" y="115" text-anchor="middle" font-size="14">TC</text>
+<circle cx="560" cy="110" r="35" fill="lightgreen" stroke="black" />
+<text x="560" y="115" text-anchor="middle" font-size="13">AIncAgent</text>
+</svg>
+<p>Has cycles: false</p>
+</body>
+</html>
