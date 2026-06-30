@@ -3,6 +3,11 @@ package graph;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 
+/**
+ * Wraps an agent to handle callbacks asynchronously in a separate worker thread.
+ * Messages are queued in a blocking queue and processed sequentially by the worker thread,
+ * allowing the main computation graph to continue without waiting for this agent's callback to complete.
+ */
 public class ParallelAgent implements Agent
 {
     private Agent agent;

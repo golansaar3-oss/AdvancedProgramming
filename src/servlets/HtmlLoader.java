@@ -19,14 +19,12 @@ public class HtmlLoader implements Servlet {
 
     public HtmlLoader(String rootFolder) {
         this.rootFolder = Paths.get(rootFolder).toAbsolutePath().normalize();
-        System.out.println("HtmlLoader root folder: " + this.rootFolder);
     }
 
     @Override
     public void handle(RequestInfo ri, OutputStream toClient) throws IOException {
         String requestedFile = getRequestedFile(ri);
 
-        System.out.println("HtmlLoader requested file: " + requestedFile);
 
         if (requestedFile.contains("..")) {
             writeHtmlResponse(toClient, 403, "<html><body><h2>403 Forbidden</h2></body></html>");
@@ -35,8 +33,6 @@ public class HtmlLoader implements Servlet {
 
         Path filePath = rootFolder.resolve(requestedFile).normalize();
 
-        System.out.println("HtmlLoader full path: " + filePath);
-        System.out.println("HtmlLoader exists? " + Files.exists(filePath));
 
         if (!filePath.startsWith(rootFolder)) {
             writeHtmlResponse(toClient, 403, "<html><body><h2>403 Forbidden</h2></body></html>");

@@ -7,6 +7,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
 
+import configs.ConfigValidator;
 import configs.GenericConfig;
 import configs.Graph;
 import graph.TopicManagerSingleton;
@@ -32,8 +33,14 @@ public class ConfLoader implements Servlet {
 
         if(confText == null || confText.equals(""))
         {
-            String html = "<html><body><h2>Could not read config file</h2></body></html>";
-            sendResponse(toClient, html);
+            sendResponse(toClient, getBadConfigHtml());
+            return;
+        }
+
+        // validate before changing the current running configuration
+        if(!ConfigValidator.isValid(confText))
+        {
+            sendResponse(toClient, getBadConfigHtml());
             return;
         }
 
@@ -50,7 +57,7 @@ public class ConfLoader implements Servlet {
         Files.createDirectories(Paths.get("config_files"));
         Files.write(Paths.get("config_files/uploaded.conf"), confText.getBytes(StandardCharsets.UTF_8));
 
-        // load the config using the class from assignment 4
+        // load the config
         currentConfig = new GenericConfig();
         currentConfig.setConfFile("config_files/uploaded.conf");
         currentConfig.create();
@@ -126,13 +133,74 @@ public class ConfLoader implements Servlet {
         return fileContent;
     }
 
+    /**
+     * Creates a friendly page for invalid configuration files.
+     */
+    private String getBadConfigHtml()
+    {
+        StringBuilder html = new StringBuilder();
+
+        html.append("<!DOCTYPE html>");
+        html.append("<html>");
+        html.append("<head>");
+        html.append("<meta charset=\"UTF-8\">");
+        html.append("<title>Bad Config</title>");
+
+        html.append("<style>");
+        html.append("body{margin:0;font-family:Arial,sans-serif;background:#f5f7fb;color:#222;}");
+        html.append(".page{padding:18px;}");
+        html.append(".card{background:white;border:1px solid #d0d7de;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,0.08);padding:22px;}");
+        html.append("h2{margin-top:0;color:#b42318;}");
+        html.append("p{color:#555;line-height:1.5;}");
+        html.append(".format{background:#f8fbff;border:1px solid #d0d7de;border-radius:10px;padding:14px;margin-top:14px;}");
+        html.append("pre{background:#1f2937;color:#f9fafb;padding:14px;border-radius:8px;overflow:auto;font-size:14px;}");
+        html.append(".note{margin-top:14px;color:#666;font-size:14px;}");
+        html.append("</style>");
+
+        html.append("</head>");
+        html.append("<body>");
+        html.append("<div class=\"page\">");
+        html.append("<div class=\"card\">");
+
+        html.append("<h2>Bad Config File</h2>");
+        html.append("<p>The uploaded configuration file could not be loaded.</p>");
+
+        html.append("<div class=\"format\">");
+        html.append("<p><b>Expected format:</b> each agent is written using 3 lines:</p>");
+        html.append("<pre>");
+        html.append("&lt;full agent class name&gt;\n");
+        html.append("&lt;input topics separated by comma&gt;\n");
+        html.append("&lt;output topics separated by comma&gt;");
+        html.append("</pre>");
+
+        html.append("<p><b>Example of working config:</b></p>");
+        html.append("<pre>");
+        html.append("configs.PlusAgent\n");
+        html.append("A,B\n");
+        html.append("C\n");
+        html.append("configs.IncAgent\n");
+        html.append("C\n");
+        html.append("D");
+        html.append("</pre>");
+        html.append("</div>");
+
+        html.append("<p class=\"note\">Fix the config file and upload it again using the Deploy button.</p>");
+
+        html.append("</div>");
+        html.append("</div>");
+        html.append("</body>");
+        html.append("</html>");
+
+        return html.toString();
+    }
+
     private void sendResponse(OutputStream toClient, String html) throws IOException
     {
         byte[] bodyBytes = html.getBytes(StandardCharsets.UTF_8);
 
         String header =
                 "HTTP/1.1 200 OK\r\n" +
-                "Content-Type: text/html\r\n" +
+                "Content-Type: text/html; charset=UTF-8\r\n" +
                 "Content-Length: " + bodyBytes.length + "\r\n" +
                 "\r\n";
 

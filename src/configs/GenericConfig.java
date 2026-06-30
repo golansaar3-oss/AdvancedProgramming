@@ -8,6 +8,10 @@ import java.util.List;
 
 import graph.*;
 
+/**
+ * Loads computational graph configurations from files using reflection.
+ * Dynamically instantiates agent classes and creates a publish-subscribe network based on the configuration file.
+ */
 public class GenericConfig implements Config{
     private String confFile;
     private List<ParallelAgent> agents;
@@ -23,7 +27,10 @@ public class GenericConfig implements Config{
         this.confFile = confFile;
     }
 
-
+    /**
+     * Reads the config file and dynamically creates agent instances using reflection.
+     * Wraps each agent in a ParallelAgent for thread-safe execution.
+     */
     @Override
     public void create() {
         try{

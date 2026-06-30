@@ -84,6 +84,7 @@ public void run() {
             try {
                 Socket client = serverSocket.accept();
                 System.out.println("Client connected");
+                
 
                 // Each client is handled by the thread pool.
                 pool.execute(() -> handleClient(client));
@@ -105,19 +106,17 @@ public void run() {
         BufferedReader reader = new BufferedReader(new InputStreamReader(client.getInputStream()));
 
         RequestInfo ri = RequestParser.parseRequest(reader);
+        
 
         if (ri == null) {
             System.out.println("RequestInfo is null");
             client.close();
             return;
         }
-
-        System.out.println("Request: " + ri.getHttpCommand() + " " + ri.getUri());
-        System.out.println("Segments: " + java.util.Arrays.toString(ri.getUriSegments()));
+        System.out.println("Client request: " + ri.getHttpCommand() + " " + ri.getUri());
 
         Servlet servlet = getMatchingServlet(ri.getHttpCommand(), ri.getUri());
 
-        System.out.println("Servlet found? " + (servlet != null));
 
         if (servlet != null) {
             servlet.handle(ri, client.getOutputStream());

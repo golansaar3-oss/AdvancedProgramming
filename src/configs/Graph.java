@@ -5,6 +5,11 @@ import java.util.HashMap;
 
 import graph.*;
 
+/**
+ * Represents a computational graph as a collection of nodes and edges.
+ * Creates nodes from topics and agents in the topic manager, with edges representing data flow.
+ * Can detect cycles in the graph.
+ */
 public class Graph extends ArrayList<Node>{
     
     public boolean hasCycles() {
