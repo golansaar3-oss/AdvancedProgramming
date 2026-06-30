@@ -8,11 +8,31 @@ import java.util.Date;
  * Messages are used to pass data through topics in the publish-subscribe system.
  */
 public class Message {
+    /**
+     * The raw UTF-8 byte representation of the message.
+     */
     public final byte[] data;
+    /**
+     * The UTF-8 encoded message body.
+     */
     public final String asText;
+    /**
+     * The text representation of the message.
+     */
     public final double asDouble;
+    /**
+     * The numeric representation of the message when parseable.
+     */
     public final Date date;
+    /**
+     * The creation timestamp of the message.
+     */
 
+    /**
+     * Creates a message from text and derives the byte and numeric views.
+     *
+     * @param input the text content for the message
+     */
     public Message(String input)
     {
         data = convertToBytes(input);
@@ -20,10 +40,20 @@ public class Message {
         asDouble = convertToDouble(input);
         date = new Date();
     }
+    /**
+     * Creates a message from UTF-8 encoded bytes.
+     *
+     * @param data the UTF-8 encoded content
+     */
     public Message(byte[] data)
     {
         this(new String(data,StandardCharsets.UTF_8));
     }
+    /**
+     * Creates a message from a numeric value.
+     *
+     * @param data the numeric content
+     */
     public Message(double data)
     {
       this(String.valueOf(data));

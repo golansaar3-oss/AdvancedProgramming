@@ -16,12 +16,20 @@ public class GenericConfig implements Config{
     private String confFile;
     private List<ParallelAgent> agents;
 
+    /**
+     * Creates an empty configuration loader.
+     */
     public GenericConfig()
     {
         agents = new ArrayList<>();
     }
 
 
+    /**
+     * Sets the configuration file path to load.
+     *
+     * @param confFile the configuration file path
+     */
     public void setConfFile(String confFile)
     {
         this.confFile = confFile;

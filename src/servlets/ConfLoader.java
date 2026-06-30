@@ -22,6 +22,19 @@ public class ConfLoader implements Servlet {
 
     private GenericConfig currentConfig;
 
+    /**
+     * Creates a configuration-loading servlet.
+     */
+    public ConfLoader() {
+    }
+
+    /**
+     * Handles an uploaded configuration file, loads the graph, and returns its HTML view.
+     *
+     * @param ri the parsed request information
+     * @param toClient the client output stream
+     * @throws IOException if writing the response or saving the file fails
+     */
     @Override
     public void handle(RequestInfo ri, OutputStream toClient) throws IOException {
 
@@ -80,6 +93,12 @@ public class ConfLoader implements Servlet {
         sendResponse(toClient, html.toString());
     }
 
+    /**
+     * Extracts the uploaded file content from a multipart request body.
+     *
+     * @param body the raw multipart body
+     * @return the extracted file content, or null if the body cannot be parsed
+     */
     private String getFileContent(String body)
     {
         // multipart body contains headers and then the file content.
@@ -209,6 +228,11 @@ public class ConfLoader implements Servlet {
         toClient.flush();
     }
 
+    /**
+     * Closes the current configuration, if one has been loaded.
+     *
+     * @throws IOException if closing the underlying config fails
+     */
     @Override
     public void close() throws IOException {
 

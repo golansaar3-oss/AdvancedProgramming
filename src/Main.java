@@ -2,7 +2,16 @@ import server.*;
 import servlets.*;
 
 
+/**
+ * Application entry point that wires the HTTP server and the demo servlets.
+ */
 public class Main {
+    /**
+     * Starts the demo server, registers the built-in servlets, and waits for shutdown.
+     *
+     * @param args command-line arguments; currently unused
+     * @throws Exception if server startup or shutdown fails
+     */
     public static void main(String[] args) throws Exception{
 
         

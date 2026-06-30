@@ -2,6 +2,10 @@ package graph;
 
 import graph.TopicManagerSingleton.TopicManager;
 
+
+/**
+ * An agent that increments a numeric topic value by one.
+ */
 public class IncAgent implements Agent{
 
     private String name;
@@ -9,6 +13,12 @@ public class IncAgent implements Agent{
     private String[] subs;
     private String[] pubs;
 
+    /**
+     * Creates an increment agent that subscribes to one topic and publishes to one topic.
+     *
+     * @param subs the subscribed topics
+     * @param pubs the published topics
+     */
     public IncAgent(String[] subs, String[] pubs)
     {
         this.subs = subs;
@@ -22,16 +32,30 @@ public class IncAgent implements Agent{
         tm.getTopic(pubs[0]).addPublisher(this);
         
     }
+    /**
+     * Returns the agent name.
+     *
+     * @return the agent name
+     */
     @Override
     public String getName() {
         return this.name;
     }
 
+    /**
+     * Resets the agent state.
+     */
     @Override
     public void reset() {
         return;
     }
 
+    /**
+     * Increments numeric messages from the subscribed topic and republishes them.
+     *
+     * @param topic the topic name that triggered the callback
+     * @param msg the published message
+     */
     @Override
     public void callback(String topic, Message msg) {
         if(msg == null)
@@ -49,6 +73,9 @@ public class IncAgent implements Agent{
         
     }
 
+    /**
+     * Unsubscribes the agent from its topics.
+     */
     @Override
     public void close() {
         TopicManagerSingleton.TopicManager manager = TopicManagerSingleton.get();

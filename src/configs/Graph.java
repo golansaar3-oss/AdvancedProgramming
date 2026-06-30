@@ -12,6 +12,17 @@ import graph.*;
  */
 public class Graph extends ArrayList<Node>{
     
+    /**
+     * Creates an empty graph.
+     */
+    public Graph() {
+    }
+
+    /**
+     * Checks whether any node in the graph participates in a cycle.
+     *
+     * @return true if a cycle exists, otherwise false
+     */
     public boolean hasCycles() {
         for(Node node : this)
         {
@@ -20,6 +31,9 @@ public class Graph extends ArrayList<Node>{
         }
         return false;
     }
+    /**
+     * Rebuilds the graph from the topics currently registered in the topic manager.
+     */
     public void createFromTopics()
 {
     // Remove previous graph content

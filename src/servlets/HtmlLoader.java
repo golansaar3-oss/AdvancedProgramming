@@ -17,10 +17,22 @@ public class HtmlLoader implements Servlet {
 
     private final Path rootFolder;
 
+    /**
+     * Creates a static file servlet rooted at the given folder.
+     *
+     * @param rootFolder the root folder for served files
+     */
     public HtmlLoader(String rootFolder) {
         this.rootFolder = Paths.get(rootFolder).toAbsolutePath().normalize();
     }
 
+    /**
+     * Serves a static file response for the requested URI.
+     *
+     * @param ri the parsed request information
+     * @param toClient the client output stream
+     * @throws IOException if reading the file or writing the response fails
+     */
     @Override
     public void handle(RequestInfo ri, OutputStream toClient) throws IOException {
         String requestedFile = getRequestedFile(ri);
@@ -49,6 +61,12 @@ public class HtmlLoader implements Servlet {
         writeHtmlResponse(toClient, 200, html);
     }
 
+    /**
+     * Resolves the requested file path relative to the servlet root.
+     *
+     * @param ri the parsed request information
+     * @return the requested relative file path
+     */
     private String getRequestedFile(RequestInfo ri) {
         String[] segments = ri.getUriSegments();
 
@@ -74,6 +92,14 @@ public class HtmlLoader implements Servlet {
         return result;
     }
 
+    /**
+     * Writes a complete HTML response with the given status code.
+     *
+     * @param out the client output stream
+     * @param statusCode the HTTP status code
+     * @param body the HTML body
+     * @throws IOException if writing fails
+     */
     private void writeHtmlResponse(OutputStream out, int statusCode, String body) throws IOException {
         String statusText = statusCode == 200 ? "OK" :
                             statusCode == 403 ? "Forbidden" :
@@ -94,12 +120,23 @@ public class HtmlLoader implements Servlet {
         out.flush();
     }
 
+    /**
+     * Escapes HTML special characters in text content.
+     *
+     * @param s the text to escape
+     * @return the escaped text
+     */
     private String escapeHtml(String s) {
         return s.replace("&", "&amp;")
                 .replace("<", "&lt;")
                 .replace(">", "&gt;");
     }
 
+    /**
+     * No-op close hook for the static file servlet.
+     *
+     * @throws IOException never thrown by this implementation
+     */
     @Override
     public void close() throws IOException {
         // Nothing to close

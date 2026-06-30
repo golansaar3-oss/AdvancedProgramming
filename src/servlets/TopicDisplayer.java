@@ -18,6 +18,19 @@ import server.RequestParser.RequestInfo;
  */
 public class TopicDisplayer implements Servlet {
 
+    /**
+     * Creates the topic display servlet.
+     */
+    public TopicDisplayer() {
+    }
+
+    /**
+     * Publishes the requested message and renders the current topic values as HTML.
+     *
+     * @param ri the parsed request information
+     * @param toClient the client output stream
+     * @throws IOException if writing the response fails
+     */
     @Override
     public void handle(RequestInfo ri, OutputStream toClient) throws IOException {
 
@@ -206,6 +219,11 @@ public class TopicDisplayer implements Servlet {
         toClient.flush();
     }
 
+    /**
+     * No-op close hook for the topic display servlet.
+     *
+     * @throws IOException never thrown by this implementation
+     */
     @Override
     public void close() throws IOException {
         // nothing to close

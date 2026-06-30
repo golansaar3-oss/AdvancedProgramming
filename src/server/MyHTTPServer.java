@@ -28,6 +28,12 @@ public class MyHTTPServer extends Thread implements HTTPServer{
     private final Map<String,Servlet> postServlets;
     private final Map<String,Servlet> deleteServlets;
 
+    /**
+     * Creates a server bound to the given port and backed by a fixed thread pool.
+     *
+     * @param port the listening port
+     * @param nThreads the number of worker threads
+     */
     public MyHTTPServer(int port,int nThreads){
         this.port = port;
         this.pool = Executors.newFixedThreadPool(nThreads);
@@ -39,6 +45,13 @@ public class MyHTTPServer extends Thread implements HTTPServer{
         this.stop = false;
     }
 
+    /**
+     * Registers a servlet for the given HTTP command and URI prefix.
+     *
+     * @param httpCommanmd the HTTP method name
+     * @param uri the URI prefix
+     * @param s the servlet to register
+     */
     public void addServlet(String httpCommanmd, String uri, Servlet s){
         if(httpCommanmd.equalsIgnoreCase("GET"))
         {
@@ -56,6 +69,12 @@ public class MyHTTPServer extends Thread implements HTTPServer{
         }
     }
 
+    /**
+     * Removes a servlet registration for the given HTTP command and URI prefix.
+     *
+     * @param httpCommanmd the HTTP method name
+     * @param uri the URI prefix
+     */
     public void removeServlet(String httpCommanmd, String uri){
          if (httpCommanmd.equalsIgnoreCase("GET")) {
             getServlets.remove(uri);
@@ -70,6 +89,9 @@ public class MyHTTPServer extends Thread implements HTTPServer{
         }
     }
 
+    /**
+     * Accepts client connections and dispatches requests to the worker pool.
+     */
     @Override
 public void run() {
     try {
@@ -157,6 +179,13 @@ public void run() {
     }
     }
 
+    /**
+     * Selects the servlet whose URI prefix best matches the request.
+     *
+     * @param command the HTTP method name
+     * @param uri the request URI
+     * @return the matching servlet, or null if none matches
+     */
     private Servlet getMatchingServlet(String command, String uri)
     {
         Map<String, Servlet> map = null;
@@ -197,6 +226,9 @@ public void run() {
         return map.get(bestMatch);
     }
 
+    /**
+     * Stops the server, closes the socket, and shuts down all registered servlets.
+     */
     public void close(){
         stop = true;
 
@@ -213,6 +245,11 @@ public void run() {
         closeServlets(deleteServlets);
     }
 
+    /**
+     * Closes every servlet registered in the provided map.
+     *
+     * @param map the servlet registry to close
+     */
     private void closeServlets(Map<String, Servlet> map) {
         for (Servlet s : map.values()) {
             try {

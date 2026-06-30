@@ -150,6 +150,7 @@ http://localhost:8080/app/index.html
 - Generated mathematical equation
 - Updated topic values
 
+If an invalid configuration file is uploaded, the application displays a validation page together with an example of the expected configuration format.
 ---
 
 # Example Configuration
@@ -212,6 +213,19 @@ If an invalid configuration is uploaded:
 
 ---
 
+# Documentation
+
+The project includes complete JavaDoc documentation for the public API.
+
+To browse the documentation, open:
+
+```text
+doc/index.html
+```
+
+---
+
+The documentation describes the project's classes, interfaces, and public methods, making the HTTP server and computational graph API easier to understand and reuse.
 # Design Highlights
 
 - Reflection-based dynamic agent creation.

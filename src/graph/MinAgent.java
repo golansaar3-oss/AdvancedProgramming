@@ -2,6 +2,10 @@ package graph;
 
 import graph.TopicManagerSingleton.TopicManager;
 
+
+/**
+ * An agent that subtracts the second numeric topic value from the first one.
+ */
 public class MinAgent implements Agent{
     private String name;
 
@@ -11,6 +15,12 @@ public class MinAgent implements Agent{
     private double x;
     private double y;
 
+    /**
+     * Creates a subtraction agent that consumes two topics and publishes one result.
+     *
+     * @param subs the subscribed topics
+     * @param pubs the published topics
+     */
     public MinAgent(String[] subs,String[] pubs)
     {
         this.name = "MinAgent";
@@ -26,17 +36,31 @@ public class MinAgent implements Agent{
         tm.getTopic(pubs[0]).addPublisher(this);
     }
 
+    /**
+     * Returns the agent name.
+     *
+     * @return the agent name
+     */
     @Override
     public String getName() {
         return this.name;
     }
 
+    /**
+     * Resets the stored input values.
+     */
     @Override
     public void reset() {
         x = 0.0;
         y = 0.0;
     }
 
+    /**
+     * Subtracts the second input from the first and republishes the result.
+     *
+     * @param topic the topic name that triggered the callback
+     * @param msg the published message
+     */
     @Override
     public void callback(String topic, Message msg) {
         if(msg == null)
@@ -65,6 +89,9 @@ public class MinAgent implements Agent{
         TopicManagerSingleton.get().getTopic(pubs[0]).publish(new Message(result));
     }
 
+    /**
+     * Unsubscribes the agent from its topics.
+     */
     @Override
     public void close() {
         TopicManagerSingleton.TopicManager manager = TopicManagerSingleton.get();

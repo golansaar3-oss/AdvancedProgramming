@@ -12,6 +12,19 @@ import java.util.Map;
  */
 public class RequestParser {
 
+    /**
+     * Utility class; do not instantiate.
+     */
+    private RequestParser() {
+    }
+
+    /**
+     * Parses a raw HTTP request into a structured request object.
+     *
+     * @param reader the request reader
+     * @return the parsed request, or null when the input is empty or invalid
+     * @throws IOException if reading from the stream fails
+     */
     public static RequestInfo parseRequest(BufferedReader reader) throws IOException {
 
         String firstLine = reader.readLine();
@@ -117,6 +130,12 @@ public class RequestParser {
         );
     }
 
+    /**
+     * Decodes URL query parameters into the parameter map.
+     *
+     * @param query the raw query string
+     * @param parameters the parameter map to populate
+     */
     private static void parseQueryParameters(String query, Map<String, String> parameters) {
         if (query == null || query.isEmpty()) {
             return;
@@ -135,6 +154,12 @@ public class RequestParser {
         }
     }
 
+    /**
+     * Parses request body content into the parameter map.
+     *
+     * @param body the request body
+     * @param parameters the parameter map to populate
+     */
     private static void parseBodyParameters(String body, Map<String, String> parameters) {
         if (body == null || body.isEmpty()) {
             return;
@@ -174,6 +199,12 @@ public class RequestParser {
         }
     }
 
+    /**
+     * Decodes a single URL-encoded string value.
+     *
+     * @param s the encoded value
+     * @return the decoded value, or the original text if decoding fails
+     */
     private static String urlDecode(String s) {
         try {
             return java.net.URLDecoder.decode(s, StandardCharsets.UTF_8);
@@ -192,6 +223,15 @@ public class RequestParser {
         private final Map<String, String> parameters;
         private final byte[] content;
 
+        /**
+         * Creates a parsed request record.
+         *
+         * @param httpCommand the HTTP command
+         * @param uri the raw request URI
+         * @param uriSegments the URI path segments
+         * @param parameters the parsed parameters
+         * @param content the request body bytes
+         */
         public RequestInfo(String httpCommand, String uri, String[] uriSegments, Map<String, String> parameters, byte[] content) {
             this.httpCommand = httpCommand;
             this.uri = uri;
@@ -200,22 +240,47 @@ public class RequestParser {
             this.content = content;
         }
 
+        /**
+         * Returns the HTTP command.
+         *
+         * @return the HTTP command
+         */
         public String getHttpCommand() {
             return httpCommand;
         }
 
+        /**
+         * Returns the raw URI.
+         *
+         * @return the raw URI
+         */
         public String getUri() {
             return uri;
         }
 
+        /**
+         * Returns the URI path segments.
+         *
+         * @return the URI path segments
+         */
         public String[] getUriSegments() {
             return uriSegments;
         }
 
+        /**
+         * Returns the parsed parameters.
+         *
+         * @return the parameters map
+         */
         public Map<String, String> getParameters() {
             return parameters;
         }
 
+        /**
+         * Returns the request body bytes.
+         *
+         * @return the request content bytes
+         */
         public byte[] getContent() {
             return content;
         }

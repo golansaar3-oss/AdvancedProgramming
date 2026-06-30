@@ -2,6 +2,11 @@ package graph;
 
 import graph.TopicManagerSingleton.TopicManager;
 
+
+
+/**
+ * An agent that adds two numeric topic values and publishes the result.
+ */
 public class PlusAgent implements Agent{
     private String name;
 
@@ -11,6 +16,12 @@ public class PlusAgent implements Agent{
     private double x;
     private double y;
 
+    /**
+     * Creates an addition agent that consumes two topics and publishes one result.
+     *
+     * @param subs the subscribed topics
+     * @param pubs the published topics
+     */
     public PlusAgent(String[] subs,String[] pubs)
     {
         this.name = "PlusAgent";
@@ -25,17 +36,31 @@ public class PlusAgent implements Agent{
 
         tm.getTopic(pubs[0]).addPublisher(this);
     }
+    /**
+     * Returns the agent name.
+     *
+     * @return the agent name
+     */
     @Override
     public String getName() {
         return this.name;
     }
 
+    /**
+     * Resets the stored input values.
+     */
     @Override
     public void reset() {
         x = 0.0;
         y = 0.0;
     }
 
+    /**
+     * Adds the two input values and republishes the result.
+     *
+     * @param topic the topic name that triggered the callback
+     * @param msg the published message
+     */
     @Override
     public void callback(String topic, Message msg) {
         if(msg == null)
@@ -65,6 +90,9 @@ public class PlusAgent implements Agent{
         
     }
 
+    /**
+     * Unsubscribes the agent from its topics.
+     */
     @Override
     public void close() {
         TopicManagerSingleton.TopicManager manager = TopicManagerSingleton.get();

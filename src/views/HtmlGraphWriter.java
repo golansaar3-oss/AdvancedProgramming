@@ -16,7 +16,18 @@ import configs.Node;
  * Topics are shown as rectangles and agents are shown as circles.
  */
 public class HtmlGraphWriter {
+    /**
+     * Utility class; do not instantiate.
+     */
+    private HtmlGraphWriter() {
+    }
 
+    /**
+     * Builds the full HTML document used to visualize the computational graph.
+     *
+     * @param graph the graph to render
+     * @return the HTML document lines
+     */
     public static List<String> getGraphHTML(Graph graph) {
 
         List<String> html = new ArrayList<>();
@@ -308,6 +319,12 @@ public class HtmlGraphWriter {
     /**
      * Builds a readable equation from the graph structure.
      * The method uses the edges between topics and agents, so it reflects the loaded config.
+     */
+    /**
+     * Builds a readable equation summary from the graph topology.
+     *
+     * @param graph the graph to analyze
+     * @return a rendered equation or a fallback message
      */
     private static String buildEquation(Graph graph) {
 

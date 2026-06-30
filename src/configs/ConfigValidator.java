@@ -13,6 +13,12 @@ import graph.Agent;
 public class ConfigValidator {
 
     /**
+     * Utility class; do not instantiate.
+     */
+    private ConfigValidator() {
+    }
+
+    /**
      * Checks if the given configuration text can be loaded as a valid config.
      *
      * @param confText the uploaded configuration text
