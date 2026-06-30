@@ -1,4 +1,5 @@
 # Advanced Programming – Assignment 6
+
 ## HTTP Server for Computational Graphs
 
 ### Author
@@ -8,30 +9,42 @@ Saar Golan
 
 # Project Description
 
-This project implements a lightweight HTTP server in Java that allows users to deploy and interact with computational graphs through a web interface.
+This project implements a lightweight HTTP server in Java for creating and interacting with computational graphs through a web interface.
 
-The server supports:
+Users can upload graph configurations, publish values to topics, visualize the generated graph, and observe how values propagate through the computation in real time.
 
-- Uploading graph configuration files.
-- Dynamically creating computational graphs.
-- Publishing values to graph topics.
-- Displaying the graph visually.
-- Displaying the latest value of every topic.
+The project integrates all components developed throughout Assignments 1–6, including the publish/subscribe mechanism, dynamic configuration loading, graph generation, HTTP communication, and web visualization.
 
-The project is built on top of the infrastructure developed in previous assignments, including the publish/subscribe system, graph generation, and HTTP request parsing.
+---
+
+# Features
+
+- Upload computational graph configuration files.
+- Dynamic graph creation using Java Reflection.
+- Interactive SVG graph visualization.
+- Draggable graph nodes with automatically updated connections.
+- Automatic generation of the mathematical equation represented by the graph.
+- Publish values to graph topics.
+- Live table displaying the latest value of every topic.
+- Configuration validation before deployment.
+- Friendly error page for invalid configuration files.
+- Multi-threaded execution using ParallelAgent.
 
 ---
 
 # Project Structure
 
-├── src/
-│   ├── configs/
+```text
+.
+├── src
+│   ├── configs
 │   │   ├── Config.java
+│   │   ├── ConfigValidator.java
 │   │   ├── GenericConfig.java
 │   │   ├── Graph.java
 │   │   └── Node.java
 │   │
-│   ├── graph/
+│   ├── graph
 │   │   ├── Agent.java
 │   │   ├── IncAgent.java
 │   │   ├── Message.java
@@ -42,81 +55,68 @@ The project is built on top of the infrastructure developed in previous assignme
 │   │   ├── Topic.java
 │   │   └── TopicManagerSingleton.java
 │   │
-│   ├── server/
+│   ├── server
 │   │   ├── HTTPServer.java
 │   │   ├── MyHTTPServer.java
 │   │   └── RequestParser.java
 │   │
-│   ├── servlets/
+│   ├── servlets
 │   │   ├── ConfLoader.java
 │   │   ├── HtmlLoader.java
 │   │   ├── Servlet.java
 │   │   └── TopicDisplayer.java
 │   │
-│   ├── views/
+│   ├── views
 │   │   └── HtmlGraphWriter.java
 │   │
 │   └── Main.java
 │
 └── README.md
+```
 
 ---
 
-# Design
+# Architecture
 
-The project is divided into several independent components.
+The project follows the MVC (Model–View–Controller) architecture.
 
-## HTTP Server
+### Model
 
-`MyHTTPServer` listens for incoming HTTP connections.
+Responsible for the application logic.
 
-For every request it:
+Includes:
 
-1. Parses the HTTP request.
-2. Finds the matching servlet.
-3. Invokes the servlet.
-4. Returns an HTTP response.
-
----
-
-## Servlets
-
-### HtmlLoader
-
-Serves static HTML files from the `html_files` directory.
+- Topics
+- Agents
+- Messages
+- Graph
+- GenericConfig
+- ParallelAgent
 
 ---
 
-### ConfLoader
+### Controller
 
-Responsible for:
+Responsible for handling HTTP requests.
 
-- Receiving uploaded configuration files.
-- Saving the configuration.
-- Creating the computational graph.
-- Returning an HTML visualization of the graph.
+Includes:
 
----
-
-### TopicDisplayer
-
-Responsible for:
-
-- Receiving topic/value pairs.
-- Publishing messages to the requested topic.
-- Displaying a table containing the latest value of every topic.
+- MyHTTPServer
+- HtmlLoader
+- ConfLoader
+- TopicDisplayer
 
 ---
 
-## Computational Graph
+### View
 
-The graph is generated from the TopicManager after loading a configuration.
+Responsible for presenting the system.
 
-Topics are displayed as rectangles.
+Includes:
 
-Agents are displayed as circles.
-
-Directed edges represent publish/subscribe relationships.
+- HTML pages
+- HtmlGraphWriter
+- Interactive SVG graph
 
 ---
 
@@ -125,11 +125,11 @@ Directed edges represent publish/subscribe relationships.
 The project currently includes:
 
 - PlusAgent
-- MinusAgent
+- MinAgent *(performs subtraction)*
 - MulAgent
 - IncAgent
 
-Additional agents can be added by implementing the `Agent` interface.
+Additional agents can be added simply by implementing the `Agent` interface and referencing the class in the configuration file.
 
 ---
 
@@ -143,10 +143,11 @@ http://localhost:8080/app/index.html
 ```
 
 3. Upload a configuration file.
-4. Publish values using the web interface.
+4. Publish values through the web interface.
 5. Observe:
 
-- Graph visualization
+- Interactive computational graph
+- Generated mathematical equation
 - Updated topic values
 
 ---
@@ -158,7 +159,7 @@ graph.PlusAgent
 A,B
 C
 
-graph.MinusAgent
+graph.MinAgent
 A,B
 D
 
@@ -174,7 +175,7 @@ A = 5
 B = 3
 ```
 
-Result:
+Computed values:
 
 ```
 C = 8
@@ -184,25 +185,51 @@ E = 16
 
 ---
 
+# Configuration Validation
+
+Before loading a configuration, the application validates its structure.
+
+If an invalid configuration is uploaded:
+
+- The graph is not deployed.
+- A friendly error page is displayed.
+- A valid configuration example is provided to help the user correct the file.
+
+---
+
 # Technologies
 
 - Java
 - HTTP
 - HTML
+- CSS
 - SVG
+- JavaScript
 - Java Reflection
-- Publish / Subscribe architecture
+- Multi-threading
+- Publish / Subscribe
+- MVC Architecture
 
 ---
 
-# Notes
+# Design Highlights
 
-The implementation reuses components developed throughout previous assignments:
+- Reflection-based dynamic agent creation.
+- Thread-safe publish/subscribe communication.
+- Multi-threaded message processing.
+- Automatic graph generation from the loaded configuration.
+- Interactive SVG visualization.
+- Separation of concerns using MVC.
+- Modular and extensible architecture.
 
-- Publish/Subscribe system
-- Reflection-based configuration loader
-- Computational graph
-- HTTP request parser
-- Threaded HTTP server
+---
 
-These components were integrated to create an interactive web application for visualizing and interacting with computational graphs.
+# Future Extensions
+
+The project architecture allows future additions with minimal code changes, such as:
+
+- New computational agents.
+- Additional graph operations.
+- More advanced graph layouts.
+- Persistent configuration storage.
+- WebSocket-based real-time updates.
